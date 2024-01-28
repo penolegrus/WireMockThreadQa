@@ -2,7 +2,6 @@ package tests;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.client.WireMock;
-import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import lombok.SneakyThrows;
@@ -43,7 +42,7 @@ public class WireMockTests {
     }
 
     @Test
-    public void testProductsSizeIsEmpty(){
+    public void testProductsSizeIsEmpty() {
         wireMockExtension.stubFor(
                 WireMock.get("/products")
                         .willReturn(aResponse()
@@ -54,12 +53,12 @@ public class WireMockTests {
         webTestClient.get().uri("/api/products/count")
                 .exchange()
                 .expectStatus().isOk()
-                .expectBody().json("{\"count\" : 1}");
+                .expectBody().json("{\"count\" : 0}");
     }
 
     @Test
     @SneakyThrows
-    public void testProductsSizeIsNotEmpty(){
+    public void testProductsSizeIsNotEmpty() {
         List<Product> products = generateProducts(10);
         String jsonProducts = mapper.writeValueAsString(products);
 
@@ -76,7 +75,7 @@ public class WireMockTests {
                 .expectBody().json("{\"count\" : 10}");
     }
 
-    private List<Product> generateProducts(int count){
+    private List<Product> generateProducts(int count) {
         Random random = new Random();
         List<Product> products = new ArrayList<>();
         for (int i = 0; i < count; i++) {
@@ -89,7 +88,7 @@ public class WireMockTests {
                     .id(random.nextInt(4000))
                     .rating(rating)
                     .title("Some lol" + random.nextInt(1000))
-                    .price((double)random.nextInt(10000))
+                    .price((double) random.nextInt(10000))
                     .category("Some threadqa")
                     .image("fakepath")
                     .description("fake description").build();
@@ -97,17 +96,4 @@ public class WireMockTests {
         }
         return products;
     }
-
-
-
-
-
-
-
-
-
 }
-
-
-
-
